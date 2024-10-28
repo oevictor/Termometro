@@ -1,150 +1,267 @@
-#a interface do termometro será feita aqui, após terminada será feito um .exe para rodar no windows
-#naquele pc antigo que tem o windows xp
-
-import  tkinter as tk
-from tkinter import ttk, scrolledtext
-# para a intercafe do termometro
 import serial
 import serial.tools.list_ports
 import threading
-import datetime
-import os
-#para a comunicação com o arduino
+import matplotlib
 import matplotlib.pyplot as plt
-#para fazer um grafico bolado
-class ArduinoController:
-    def __init__(self, root):
-        # Inicializa a classe principal do controlador
-        self.root = root  # Define a janela principal
-        self.root.title("Controlador do Termometro")  # Define o título da janela
-        self.serial_connection = None  # Inicializa a conexão serial como nula
-        self.is_running = False  # Flag para controlar se está executando
-        self.setup_gui()  # Chama o método para configurar a interface
-        
-    def setup_gui(self):
-        
-        # Configura a seção de controles
-        control_frame = ttk.LabelFrame(self.root, text="Controles", padding="5")
-        control_frame.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-        
-        # Botões de conectar e iniciar/parar
-        self.connect_btn = ttk.Button(control_frame, text="Inicar/Parar", command=self.toggle_connection)
-        self.connect_btn.grid(row=0, column=0, padx=5)
-        
-        self.start_stop_btn = ttk.Button(control_frame, text="Inicar", command=self.toggle_running, state="disabled")
-        self.start_stop_btn.grid(row=0, column=1, padx=5)
-        
-        # Área de exibição do output
-        output_frame = ttk.LabelFrame(self.root, text="Dados", padding="5")
-        output_frame.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
-       
-        # Campo de texto rolável para output
-        self.output_text = scrolledtext.ScrolledText(output_frame, width=50, height=20)
-        self.output_text.grid(row=0, column=0, padx=5, pady=5,sticky="nsew")        
-       
-        #grafico da temperatura em função do tempo (tenho que configurar as unidades dps)
-        grafico = ttk.LabelFrame(self.root, text="Gráfico", padding="5")
-        grafico.grid(row=3, column=0, padx=5, pady=5, sticky="nsew")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.animation import FuncAnimation
+import tkinter as tk
+from tkinter import simpledialog, messagebox, filedialog
+import time
+from datetime import datetime, timedelta
 
-        
-        
-        # Botão de salvar
-        save_frame = ttk.Frame(self.root)
-        save_frame.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
-        
-        ttk.Button(save_frame, text="Salvar os  dados", command=self.save_output).grid(row=0, column=0, padx=5)
-        
-        # Configura a expansão das linhas e colunas
-        self.root.grid_rowconfigure(1, weight=1)
-        self.root.grid_rowconfigure(2, weight=1)
-        self.root.grid_rowconfigure(3, weight=0)
-        self.root.grid_columnconfigure(0, weight=1)
-        
-        output_frame.grid_rowconfigure(0, weight=1)
-        output_frame.grid_columnconfigure(0, weight=1)    
+# Use o backend do Matplotlib para Tkinter
+matplotlib.use('TkAgg')
 
-    def refresh_ports(self):
-        # Atualiza a lista de portas seriais disponíveis
-        ports = [port.device for port in serial.tools.list_ports.comports()]
-        self.port_combo['values'] = ports
-        if ports:
-            self.port_combo.set(ports[0])
+class ArduinoTemperatureMonitor(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Monitor de Temperatura Arduino")
+        self.geometry('800x600')
+        
+        # Variáveis globais para armazenar os dados
+        self.data_points = []    # Lista para armazenar as temperaturas
+        self.times = []          # Lista para armazenar o tempo
+        self.timestamps = []     # Lista para armazenar timestamps reais
+        self.running = False     # Flag para controlar o loop de leitura
+        self.end_time = None     # Tempo de término da coleta
+        self.interval = None     # Intervalo entre medições (em segundos)
+        self.next_reading = None # Timestamp da próxima leitura programada
+        
+        # Inicializa a comunicação serial
+        self.ser = self.initialize_serial()
+
+        # Configuração da interface gráfica
+        self.create_widgets()
+        self.create_plot()
+
+        # Inicia a animação do gráfico
+        self.ani = FuncAnimation(self.fig, self.update_plot, interval=1000)
+
+    def initialize_serial(self):
+        def find_arduino_port():
+            ports = serial.tools.list_ports.comports()
+            for port in ports:
+                if 'Arduino' in port.description or 'CH340' in port.description:
+                    return port.device
+            return None
+
+        arduino_port = find_arduino_port()
+        # if arduino_port is None:
+        #     messagebox.showerror("Erro", "Não foi possível encontrar o Arduino conectado.")
+        #     self.destroy()
+        #     exit()
+        # else:
+        #     try:
+        #         ser = serial.Serial(arduino_port, 9600, timeout=1)
+        #         return ser
+        #     except serial.SerialException:
+        #         messagebox.showerror("Erro", "Erro ao conectar à porta serial. Verifique se o Arduino está conectado corretamente.")
+        #         self.destroy()
+        #         exit()
+
+    def create_widgets(self):
+        # Frame para os botões
+        frame_buttons = tk.Frame(self)
+        frame_buttons.pack(side=tk.TOP, pady=10)
+        
+        # Botão "Iniciar"
+        start_button = tk.Button(frame_buttons, text="Iniciar", command=self.start_data_collection, width=15)
+        start_button.pack(side=tk.LEFT, padx=10)
+        
+        # Botão "Parar"
+        stop_button = tk.Button(frame_buttons, text="Parar", command=self.stop_data_collection, width=15)
+        stop_button.pack(side=tk.LEFT, padx=10)
+        
+        # Botão "Salvar"
+        save_button = tk.Button(frame_buttons, text="Salvar", command=self.save_data, width=15)
+        save_button.pack(side=tk.LEFT, padx=10)
+        
+        # Frame para displays
+        frame_display = tk.Frame(self)
+        frame_display.pack(side=tk.TOP, pady=10)
+        
+        # Display da Temperatura Atual
+        temp_label_title = tk.Label(frame_display, text="Temperatura Atual:", font=("Helvetica", 16))
+        temp_label_title.pack(side=tk.LEFT, padx=5)
+        
+        self.temp_label = tk.Label(frame_display, text="-- °C", font=("Helvetica", 16), fg="blue")
+        self.temp_label.pack(side=tk.LEFT, padx=5)
+        
+        # Display do Tempo Restante
+        time_label_title = tk.Label(frame_display, text="Tempo Restante:", font=("Helvetica", 16))
+        time_label_title.pack(side=tk.LEFT, padx=5)
+        
+        self.time_remaining_label = tk.Label(frame_display, text="--:--:--", font=("Helvetica", 16), fg="green")
+        self.time_remaining_label.pack(side=tk.LEFT, padx=5)
+        
+        # Display da Próxima Leitura
+        next_reading_title = tk.Label(frame_display, text="Próxima Leitura em:", font=("Helvetica", 16))
+        next_reading_title.pack(side=tk.LEFT, padx=5)
+        
+        self.next_reading_label = tk.Label(frame_display, text="--:--", font=("Helvetica", 16), fg="orange")
+        self.next_reading_label.pack(side=tk.LEFT, padx=5)
+
+    def create_plot(self):
+        self.fig, self.ax = plt.subplots(figsize=(8, 4))
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+    def update_time_remaining(self):
+        """
+        Atualiza os displays de tempo restante e próxima leitura
+        """
+        while self.running:
+            now = datetime.now()
             
-    def toggle_connection(self):
-        # Alterna entre conectar e desconectar do Arduino
-        if self.serial_connection is None:
-            try:
-                # Tenta estabelecer conexão serial
-                self.serial_connection = serial.Serial(self.port_var.get(), 9600, timeout=1)
-                self.connect_btn.config(text="Disconectado")
-                self.start_stop_btn.config(state="normal")
-                self.output_text.insert('end', f"Conectado {self.port_var.get()}\n")
-            except serial.SerialException as e:
-                self.output_text.insert('end', f"Erro ao concetar: {str(e)}\n")
-        else:
-            # Desconecta do Arduino
-            self.is_running = False
-            if self.serial_connection.is_open:
-                self.serial_connection.close()
-            self.serial_connection = None
-            self.connect_btn.config(text="Concetado")
-            self.start_stop_btn.config(text="Inicar", state="Desativado")
-            self.output_text.insert('end', "Desconectado\n")
+            # Atualiza tempo restante total
+            if self.end_time:
+                remaining = self.end_time - now
+                if remaining.total_seconds() <= 0:
+                    self.stop_data_collection()
+                    break
+                hours, remainder = divmod(remaining.seconds, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                self.time_remaining_label.config(text=f"{hours:02d}:{minutes:02d}:{seconds:02d}")
             
-    def toggle_running(self):
-        # Inicia ou para a leitura dos dados
-        if not self.is_running:
-            self.is_running = True
-            self.start_stop_btn.config(text="Para")
-            self.read_thread = threading.Thread(target=self.read_serial, daemon=True)
-            self.read_thread.start()
-        else:
-            self.is_running = False
-            self.start_stop_btn.config(text="Iniciar")
+            # Atualiza tempo até próxima leitura
+            if self.next_reading:
+                time_to_next = self.next_reading - now
+                if time_to_next.total_seconds() > 0:
+                    minutes, seconds = divmod(int(time_to_next.total_seconds()), 60)
+                    self.next_reading_label.config(text=f"{minutes:02d}:{seconds:02d}")
+                else:
+                    self.next_reading_label.config(text="Agora")
             
-    def read_serial(self):
-        # Função que lê continuamente os dados do Arduino
-        while self.is_running and self.serial_connection and self.serial_connection.is_open:
-            try:
-                if self.serial_connection.in_waiting:
-                    line = self.serial_connection.readline().decode('utf-8').strip()
-                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    self.output_text.insert('end', f"[{timestamp}] {line}\n")
-                    self.output_text.see('end')
-            except:
-                self.output_text.insert('end', "Erro na leitura do arduino\n")
-                break
+            time.sleep(0.1)
+
+    def clear_serial_buffer(self):
+        """
+        Limpa o buffer serial para garantir leituras atualizadas
+        """
+        while self.ser.in_waiting > 0:
+            self.ser.readline()
+
+    def read_temperature(self):
+        """
+        Faz uma única leitura de temperatura
+        """
+        self.clear_serial_buffer()
+        tries = 3  # Número de tentativas de leitura
+        
+        for _ in range(tries):
+            if self.ser.in_waiting > 0:
+                try:
+                    data = self.ser.readline().decode('utf-8').rstrip()
+                    return float(data)
+                except (ValueError, UnicodeDecodeError):
+                    continue
+        return None
+
+    def read_data(self):
+        """
+        Função para ler os dados enviados pelo Arduino em intervalos específicos
+        """
+        while self.running:
+            now = datetime.now()
+            
+            # Verifica se é hora de fazer uma leitura
+            if now >= self.next_reading:
+                temperature = self.read_temperature()
                 
-    def save_output(self):
-        # Salva o conteúdo da área de texto em um arquivo
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"arduino_output_{timestamp}.txt"
-        
-        try:
-            with open(filename, 'w') as f:
-                f.write(self.output_text.get(1.0, tk.END))
-            self.output_text.insert('end', f"Dados salvos em {filename}\n")
-        except Exception as e:
-            self.output_text.insert('end', f"Erro ao salvar os dados: {str(e)}\n")
-            
-    def plot_data(self):
-        # Plota os dados da temperatura em função do tempo ainda tenho que ver como os dados vão sair do arduino
-        #isso esta deveras genérico
-        self.x_data = []
-        self.y_data = []
-        self.fig, self.ax = plt.subplots()
-        self.line, = self.ax.plot(self.x_data, self.y_data)
-        self.ax.set_xlabel("Tempo")
-        self.ax.set_ylabel("Temperatura")
-        self.ax.set_title("Temperatura em função do tempo")
-        self.ax.grid()
-        
+                if temperature is not None:
+                    self.data_points.append(temperature)
+                    self.timestamps.append(now)
+                    elapsed_time = (now - self.timestamps[0]).total_seconds() / 60.0
+                    self.times.append(elapsed_time)
+                    self.update_current_temperature(temperature)
+                    
+                    # Programa próxima leitura
+                    self.next_reading = now + timedelta(seconds=self.interval)
+                
+            time.sleep(0.1)  # Pequena pausa para não sobrecarregar o CPU
 
-def main():
-    # Função principal que inicia a aplicação
-    root = tk.Tk()  # Cria a janela principal
-    app = ArduinoController(root)  # Instancia o controlador
-    root.mainloop()  # Inicia o loop principal da interface
+    def start_data_collection(self):
+        """
+        Função chamada quando o botão "Iniciar" é clicado.
+        Solicita duração total e intervalo entre medições.
+        """
+        if not self.running:
+            # Limpa os dados anteriores
+            self.data_points.clear()
+            self.times.clear()
+            self.timestamps.clear()
+            
+            # Solicita parâmetros ao usuário
+            hours = simpledialog.askfloat("Entrada", 
+                                        "Por quantas horas deseja coletar dados?", 
+                                        parent=self, 
+                                        minvalue=0.1)
+            
+            if hours:
+                interval_seconds = simpledialog.askinteger("Entrada",
+                                                         "Intervalo entre medições (em segundos):",
+                                                         parent=self,
+                                                         minvalue=1)
+                
+                if interval_seconds:
+                    self.running = True
+                    self.interval = interval_seconds
+                    self.end_time = datetime.now() + timedelta(hours=hours)
+                    self.next_reading = datetime.now()  # Primeira leitura imediata
+                    
+                    # Inicia as threads de leitura e atualização do tempo
+                    threading.Thread(target=self.read_data, daemon=True).start()
+                    threading.Thread(target=self.update_time_remaining, daemon=True).start()
+        else:
+            messagebox.showinfo("Informação", "A coleta de dados já está em andamento.")
+
+    def stop_data_collection(self):
+        if self.running:
+            self.running = False
+            self.time_remaining_label.config(text="00:00:00")
+            self.next_reading_label.config(text="--:--")
+            messagebox.showinfo("Informação", "Coleta de dados finalizada.")
+        else:
+            messagebox.showinfo("Informação", "A coleta de dados já está parada.")
+
+    def save_data(self):
+        if self.data_points:
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".csv",
+                filetypes=[("CSV files", "*.csv"), ("Todos os arquivos", "*.*")],
+                title="Salvar dados como"
+            )
+            if file_path:
+                try:
+                    with open(file_path, 'w') as f:
+                        f.write("Data/Hora,Minutos Decorridos,Temperatura\n")
+                        for timestamp, minutes, temp in zip(self.timestamps, self.times, self.data_points):
+                            f.write(f"{timestamp.strftime('%Y-%m-%d %H:%M:%S')},{minutes:.2f},{temp}\n")
+                    messagebox.showinfo("Sucesso", f"Dados salvos em {file_path}")
+                except Exception as e:
+                    messagebox.showerror("Erro", f"Não foi possível salvar os dados.\nErro: {e}")
+        else:
+            messagebox.showinfo("Informação", "Não há dados para salvar.")
+
+    def update_current_temperature(self, temperature):
+        self.temp_label.config(text=f"{temperature:.2f} °C")
+
+    def update_plot(self, frame):
+        if self.data_points:
+            self.ax.cla()
+            self.ax.plot(self.times, self.data_points, label='Temperatura (°C)', marker='o', color='b')
+            self.ax.set_xlabel('Tempo (minutos)')
+            self.ax.set_ylabel('Temperatura (°C)')
+            self.ax.set_title('Dados de Temperatura em Tempo Real')
+            self.ax.legend(loc='upper left')
+            self.ax.grid(True)
+            self.canvas.draw()
+        else:
+            self.ax.cla()
+            self.ax.set_title('Aguardando dados...')
+            self.canvas.draw()
 
 if __name__ == "__main__":
-    main()  # Executa a função principal se o arquivo for executado diretamente
+    app = ArduinoTemperatureMonitor()
+    app.mainloop()
