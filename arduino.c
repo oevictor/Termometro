@@ -1,44 +1,119 @@
-#include <LiquidCrystal.h>
-#include <math.h>
+// #include <LiquidCrystal.h>
+// #include <math.h>
 
-// Inicializa o LCD nos pinos especificados
-LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
-const float BETA = 3950;  // Constante BETA para o termistor
+// // Inicializa o LCD nos pinos especificados
+// // Formato: (rs, enable, d4, d5, d6, d7)
+// LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
 
-int dataCount = 0;      // Número de dados a serem enviados
-int dataSent = 0;       // Contador de dados enviados
+// // Constante BETA para o termistor - específica para o sensor de temperatura
+// const float BETA = 3950;
 
-void setup() {
-  Serial.begin(9600);   // Inicia a comunicação serial
-  lcd.begin(16, 2);     // Configura o LCD com 16 colunas e 2 linhas
-}
+// // Define os pinos analógicos para os três termopares
+// const int SENSOR_PINS[] = {A0, A1, A2};  // Array com os pinos dos sensores
+// const int NUM_SENSORS = 3;                // Número total de sensores
 
-void loop() {
-  // Verifica se ainda há dados para enviar
-  if (dataCount > dataSent) {
-    int analogValue = analogRead(A0);  // Lê o valor analógico do pino A0
-    // Calcula a temperatura em Celsius usando a fórmula do termistor
-    float celsius = 1 / (log(1 / (1023.0 / analogValue - 1)) / BETA + 1.0 / 298.15) - 273.15;
+// // Variáveis para controle de leitura
+// int dataCount = 0;      // Número de leituras que devem ser realizadas
+// int dataSent = 0;       // Contador de leituras já enviadas
 
-    // Exibe a temperatura no LCD
-    lcd.setCursor(0, 0);
-    lcd.print("Temperatura:");
-    lcd.setCursor(0, 1);
-    lcd.print(celsius);
-    lcd.print((char)223);  // Caractere para o símbolo de grau
-    lcd.print("C ");
+// void setup() {
+//   // Inicia a comunicação serial com velocidade de 9600 baud
+//   Serial.begin(9600);
+  
+//   // Configura o LCD com 16 colunas e 2 linhas
+//   lcd.begin(16, 2);
+  
+//   // Configura todos os pinos dos sensores como entrada
+//   for(int i = 0; i < NUM_SENSORS; i++) {
+//     pinMode(SENSOR_PINS[i], INPUT);
+//   }
+// }
 
-    // Envia a temperatura pela porta serial
-    Serial.println(celsius);
+// // Função para ler a temperatura de um sensor específico
+// float readTemperature(int pin) {
+//   // Lê o valor analógico do pino especificado
+//   int analogValue = analogRead(pin);
+  
+//   // Calcula a temperatura em Celsius usando a fórmula do termistor
+//   // Esta fórmula converte a leitura analógica para temperatura
+//   return 1 / (log(1 / (1023.0 / analogValue - 1)) / BETA + 1.0 / 298.15) - 273.15;
+// }
 
-    dataSent++;        // Incrementa o contador de dados enviados
-    delay(1000);       // Aguarda 1 segundo antes da próxima leitura
-  }
+// // Função para exibir as temperaturas no LCD
+// void displayLCD(float temps[]) {
+//   // lcd.clear();  // Limpa o display antes de escrever
+  
 
-  // Verifica se há comandos recebidos da GUI Python
-  if (Serial.available() > 0) {
-    String command = Serial.readStringUntil('\n');  // Lê o comando até o caractere de nova linha
-    dataCount = command.toInt();  // Converte o comando recebido para inteiro
-    dataSent = 0;                 // Reseta o contador de dados enviados
-  }
-}
+//   //tirei pq vou mostrar apenas no pc
+//   // Primeira linha do LCD 
+//   // lcd.setCursor(0, 0);
+//   // lcd.print("T1:");
+//   // lcd.print(temps[0], 1);  // Mostra temperatura com 1 casa decimal
+//   // lcd.print((char)223);    // Símbolo de grau
+//   // lcd.print("C ");
+  
+//   // lcd.setCursor(8, 0);
+//   // lcd.print("T2:");
+//   // lcd.print(temps[1], 1);
+//   // lcd.print((char)223);
+  
+//   // // Segunda linha do LCD
+//   // lcd.setCursor(0, 1);
+//   // lcd.print("T3:");
+//   // lcd.print(temps[2], 1);
+//   // lcd.print((char)223);
+//   // lcd.print("C");
+
+
+// }
+
+// void loop() {
+//   // Verifica se ainda há leituras para serem realizadas
+//   if (dataCount > dataSent) {
+//     // Array para armazenar as temperaturas dos três sensores
+//     float temperatures[NUM_SENSORS];
+    
+//     // Realiza a leitura de todos os sensores
+//     for(int i = 0; i < NUM_SENSORS; i++) {
+//       temperatures[i] = readTemperature(SENSOR_PINS[i]);
+//     }
+    
+//     // Atualiza o display LCD com as temperaturas
+//     displayLCD(temperatures);
+    
+//     // Envia os dados via serial no formato CSV
+//     // Exemplo: "25.6,26.1,25.8"
+//     for(int i = 0; i < NUM_SENSORS; i++) {
+//       Serial.print(temperatures[i]);
+//       if(i < NUM_SENSORS - 1) {
+//         Serial.print(",");  // Adiciona vírgula entre as temperaturas
+//       }
+//     }
+//     Serial.println();  // Nova linha para finalizar o envio
+    
+//     dataSent++;         // Incrementa o contador de leituras enviadas
+//     delay(1000);        // Aguarda 1 segundo antes da próxima leitura
+//   }
+
+//   // Verifica se há comandos recebidos da interface Python
+//   if (Serial.available() > 0) {
+//     // Lê o comando até encontrar uma nova linha
+//     String command = Serial.readStringUntil('\n');
+//     // Converte o comando para número e atualiza o contador de leituras
+//     dataCount = command.toInt();
+//     dataSent = 0;  // Reinicia o contador de leituras enviadas
+//   }
+// }
+
+//so testando a sainda usando o termopar cru
+
+
+// #include <math.h>
+
+// void loop(){
+//   int sensorValue = analogRead(A8);
+//   float voltage = sensorValue * (5.0 / 1023.0);
+//   float temperature = (voltage - 0.5) * 100;
+//   Serial.println(temperature);
+//   delay(1000);
+// }
