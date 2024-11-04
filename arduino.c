@@ -106,14 +106,15 @@
 // }
 
 //so testando a sainda usando o termopar cru
+// https://docs.onion.io/omega2-arduino-dock-starter-kit/arduino-kit-reading-a-temp-sensor.html
+
+#include <math.h>
 
 
-// #include <math.h>
-
-// void loop(){
-//   int sensorValue = analogRead(A8);
-//   float voltage = sensorValue * (5.0 / 1023.0);
-//   float temperature = (voltage - 0.5) * 100;
-//   Serial.println(temperature);
-//   delay(1000);
-// }
+void loop(){
+  int sensorValue = analogRead(A0);
+  float voltage = sensorValue * (5.0 / 1023.0);
+  float temperature = (voltage - 0.5) * 100;
+  Serial.println(temperature);
+  delay(1000);
+}
