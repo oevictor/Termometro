@@ -15,7 +15,7 @@ int thermoCLK2 = 36; // Pino de clock
 
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
 MAX6675 thermocouple2(thermoCLK2, thermoCS2, thermoDO2);
-// MAX6675 thermocouple3(thermoCLK3, thermoCS3, thermoDO3);
+MAX6675 thermocouple3(thermoCLK3, thermoCS3, thermoDO3);
 
 void setup() {
   Serial.begin(9600);
@@ -28,7 +28,7 @@ void loop() {
   double temp2 = thermocouple2.readCelsius();
   // double temp3 = thermocouple3.readCelsius();
 
-  // Envia as temperaturas no formato "temp1,temp2"
+  // Envia as temperaturas no formato "temp1,temp2,...."
   Serial.print(temp1);
   Serial.print(",");
   Serial.println(temp2);

@@ -40,8 +40,8 @@ class ArduinoTemperatureMonitor(tk.Tk):
         self.colors = ['blue', 'red', 'green']  # Cores para representar cada sensor no gráfico.
         self.temp_labels = []  # Rótulos de interface para exibir as temperaturas.
         self.labels_frame = None  # Armazena o quadro de rótulos de temperatura na interface.
-
-        # Inicia a comunicação com o Arduino via porta serial.
+        self.sensor_vars = []  # Variáveis de controle das caixas de seleção dos sensores.
+        self.checkboxes_frame = None  # Armazena o quadro das caixas de seleção.
         self.ser = self.initialize_serial()
         # Marca o último tempo de atualização da temperatura.
         self.last_temperature_update = datetime.now()
@@ -137,6 +137,21 @@ class ArduinoTemperatureMonitor(tk.Tk):
             label.pack()
             self.temp_labels.append(label)
 
+    def create_sensor_checkboxes(self):
+        """
+        Cria caixas de seleção para permitir que o usuário escolha quais sensores exibir.
+        """
+        if self.checkboxes_frame:
+            self.checkboxes_frame.destroy()
+        self.checkboxes_frame = tk.Frame(self.frame_display)
+        self.checkboxes_frame.pack(side=tk.LEFT, padx=20)
+        self.sensor_vars = []
+        for i in range(self.num_sensors):
+            var = tk.BooleanVar(value=True)
+            chk = tk.Checkbutton(self.checkboxes_frame, text=f"Sensor {i+1}", variable=var)
+            chk.pack(anchor='w')
+            self.sensor_vars.append(var)
+
     def create_plot(self):
         """
         Configura o gráfico para exibir as leituras de temperatura em tempo real.
@@ -161,8 +176,11 @@ class ArduinoTemperatureMonitor(tk.Tk):
         for attempt in range(tries):
             try:
                 data = self.ser.readline().decode('utf-8').strip()  # Lê e decodifica o dado recebido.
+                # print(f'tentando ver quais dados estão chegando {data}')
+                
                 if data:
                     temperatures = [float(temp) for temp in data.split(',')]
+                    # print(f' teste para ver se a temperatura esta vindo na forma T1,T2,T3{temperatures}')
                     if self.num_sensors is None:
                         # Determina o número de sensores com base nos dados recebidos.
                         self.num_sensors = len(temperatures)
@@ -184,6 +202,8 @@ class ArduinoTemperatureMonitor(tk.Tk):
         self.timestamps = []
         # Cria rótulos de temperatura na interface.
         self.create_temperature_labels()
+        # Cria caixas de seleção para os sensores.
+        self.create_sensor_checkboxes()
 
     def read_data(self):
         """
@@ -230,18 +250,24 @@ class ArduinoTemperatureMonitor(tk.Tk):
             
             plot_cursores = []  # Armazena os gráficos para permitir interação com o cursor.
             for i in range(self.num_sensors):
-                # Desenha a linha de temperatura para cada sensor.
-                lines = self.ax.plot(self.times, self.data_points[i], label=labels[i], marker='o', color=self.colors[i % len(self.colors)])
-                plot_cursores.extend(lines)
+                if self.sensor_vars[i].get():
+                    # Desenha a linha de temperatura para cada sensor selecionado.
+                    lines = self.ax.plot(self.times, self.data_points[i], label=labels[i], marker='o', color=self.colors[i % len(self.colors)])
+                    plot_cursores.extend(lines)
             
             self.ax.set_xlabel('Tempo (segundos)')
             self.ax.set_ylabel('Temperatura (°C)')
-            cursor = mplcursors.cursor(plot_cursores)  # Adiciona interatividade ao gráfico.
+            if plot_cursores:
+                cursor = mplcursors.cursor(plot_cursores)  # Adiciona interatividade ao gráfico.
             curso = Cursor(self.ax, useblit=True, color='red', linewidth=1)  # Configura o cursor para o gráfico.
             self.ax.set_title('Dados de Temperatura em Tempo Real')
             self.ax.legend(loc='upper left')  # Exibe a legenda dos sensores.
             self.ax.grid(True)  # Adiciona grade ao gráfico para facilitar a leitura dos dados.
             self.canvas.draw()  # Redesenha o gráfico atualizado.
+        else:
+            # Limpa o gráfico se nenhum sensor estiver selecionado.
+            self.ax.cla()
+            self.canvas.draw()
 
     def save_data(self):
         """
@@ -311,7 +337,11 @@ class ArduinoTemperatureMonitor(tk.Tk):
             if self.labels_frame:
                 self.labels_frame.destroy()
                 self.labels_frame = None
+            if self.checkboxes_frame:
+                self.checkboxes_frame.destroy()
+                self.checkboxes_frame = None
             self.temp_labels = []
+            self.sensor_vars = []
             
             # Inicia uma nova thread para a leitura de dados.
             self.read_thread = threading.Thread(target=self.read_data)
