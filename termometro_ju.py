@@ -13,10 +13,8 @@ from tkinter import simpledialog, messagebox, filedialog
 import time
 from datetime import datetime, timedelta
 
-
 # Configura o backend do Matplotlib para ser utilizado com Tkinter, permitindo visualização gráfica.
 matplotlib.use('TkAgg')
-
 
 class ArduinoTemperatureMonitor(tk.Tk):
     def __init__(self):
@@ -45,14 +43,20 @@ class ArduinoTemperatureMonitor(tk.Tk):
         self.ser = self.initialize_serial()
         # Marca o último tempo de atualização da temperatura.
         self.last_temperature_update = datetime.now()
+        self.read_thread = None  # Thread de leitura de dados
 
         # Configuração inicial da interface e do gráfico.
         self.create_widgets()
         self.create_plot()
+
+        # Inicia a atualização dos rótulos de tempo.
         self.update_time_labels()
 
         # Configura a animação do gráfico para atualizar a cada segundo (1000 ms).
-        self.ani = FuncAnimation(self.fig, self.update_plot, interval=1000)
+        self.ani = FuncAnimation(self.fig, self.update_plot, interval=1000, cache_frame_data=False)
+
+        # Define o protocolo para captura do evento de fechamento da janela.
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def initialize_serial(self):
         """
@@ -61,6 +65,7 @@ class ArduinoTemperatureMonitor(tk.Tk):
         """
         try:
             # Procura todas as portas disponíveis e verifica se algum dispositivo Arduino está conectado.
+            #tem que mudar isso para aceitar coisa na porta serial e não apenas Arduino, pq assim vc tem que baixar a IDE do Arduino para funcionar
             ports = serial.tools.list_ports.comports()
             arduino_ports = [port.device for port in ports if 'Arduino' in port.description or 'CH340' in port.description]
             
@@ -174,13 +179,13 @@ class ArduinoTemperatureMonitor(tk.Tk):
 
         # Tenta ler as temperaturas até 3 vezes.
         for attempt in range(tries):
+            if not self.running:
+                return None
             try:
                 data = self.ser.readline().decode('utf-8').strip()  # Lê e decodifica o dado recebido.
-                # print(f'tentando ver quais dados estão chegando {data}')
                 
                 if data:
                     temperatures = [float(temp) for temp in data.split(',')]
-                    # print(f' teste para ver se a temperatura esta vindo na forma T1,T2,T3{temperatures}')
                     if self.num_sensors is None:
                         # Determina o número de sensores com base nos dados recebidos.
                         self.num_sensors = len(temperatures)
@@ -355,6 +360,8 @@ class ArduinoTemperatureMonitor(tk.Tk):
         Interrompe a coleta de dados.
         """
         self.running = False  # Sinaliza para parar a coleta.
+        if self.read_thread and self.read_thread.is_alive():
+            self.read_thread.join()
 
     @staticmethod
     def format_timedelta(tdelta):
@@ -389,9 +396,30 @@ class ArduinoTemperatureMonitor(tk.Tk):
             # Define os rótulos como "--:--" se a coleta não estiver ativa.
             self.time_remaining_label.config(text="--:--:--")
             self.next_reading_label.config(text="--:--")
-        # Agenda uma atualização do tempo após 1 segundo.
-        self.after(1000, self.update_time_labels)
+        # Agenda uma atualização do tempo após 1 segundo e armazena o ID.
+        self._after_id = self.after(1000, self.update_time_labels)
 
+    def on_closing(self):
+        """
+        Manipula o evento de fechamento da janela, cancelando eventos pendentes.
+        """
+        # Sinaliza para a thread de leitura que ela deve parar
+        self.running = False
+
+        # Cancela o evento after pendente, se existir
+        if hasattr(self, '_after_id'):
+            self.after_cancel(self._after_id)
+
+        # Aguarda a thread de leitura terminar
+        if self.read_thread and self.read_thread.is_alive():
+            self.read_thread.join()
+
+        # Fecha a conexão serial, se estiver aberta
+        if self.ser and self.ser.is_open:
+            self.ser.close()
+
+        # Destrói a janela
+        self.destroy()
 
 if __name__ == "__main__":
     # Executa a aplicação principal quando o script é executado.
