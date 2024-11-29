@@ -1,0 +1,312 @@
+Microsoft Windows [versão 10.0.22631.4460]
+(c) Microsoft Corporation. Todos os direitos reservados.
+
+C:\Users\emanu>pyinstaller --onefile --windowed --debug=all termometro_ju.py
+189 INFO: PyInstaller: 6.11.1, contrib hooks: 2024.10
+189 INFO: Python: 3.11.7
+205 INFO: Platform: Windows-10-10.0.22631-SP0
+205 INFO: Python environment: C:\msys64\ucrt64
+Script file 'termometro_ju.py' does not exist.
+
+C:\Users\emanu>cd C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola
+
+C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pyinstaller --onefile --windowed --debug=all termometro_ju.py
+187 INFO: PyInstaller: 6.11.1, contrib hooks: 2024.10
+187 INFO: Python: 3.11.7
+187 INFO: Platform: Windows-10-10.0.22631-SP0
+187 INFO: Python environment: C:\msys64\ucrt64
+187 INFO: wrote C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\termometro_ju.spec
+207 INFO: Module search paths (PYTHONPATH):
+['C:\\msys64\\ucrt64\\bin\\pyinstaller.exe',
+ 'C:\\msys64\\ucrt64\\lib\\python311.zip',
+ 'C:\\msys64\\ucrt64\\lib\\python3.11',
+ 'C:\\msys64\\ucrt64\\lib\\python3.11\\lib-dynload',
+ 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages',
+ 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\setuptools\\_vendor',
+ 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola']
+502 INFO: checking Analysis
+502 INFO: Building Analysis because Analysis-00.toc is non existent
+502 INFO: Running Analysis Analysis-00.toc
+502 INFO: Target bytecode optimization level: 0
+502 INFO: Initializing module dependency graph...
+502 INFO: Initializing module graph hook caches...
+518 INFO: Analyzing base_library.zip ...
+1460 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks'
+1981 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks'
+3443 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks'
+4921 INFO: Caching module dependency graph...
+5015 INFO: Looking for Python shared library...
+5031 INFO: Using Python shared library: C:\msys64\ucrt64\bin\libpython3.11.dll
+5031 INFO: Analyzing C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\termometro_ju.py
+5189 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+5189 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+5412 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks'
+5441 INFO: Processing module hooks (post-graph stage)...
+5441 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks'
+5457 INFO: Performing binary vs. data reclassification (925 entries)
+5567 INFO: Looking for ctypes DLLs
+5598 WARNING: Ignoring /System/Library/Frameworks/IOKit.framework/IOKit imported from C:\msys64\ucrt64\lib\python3.11\site-packages\serial\tools\list_ports_osx.py - only basenames are supported with ctypes imports!
+5598 WARNING: Ignoring /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation imported from C:\msys64\ucrt64\lib\python3.11\site-packages\serial\tools\list_ports_osx.py - only basenames are supported with ctypes imports!
+5614 INFO: Analyzing run-time hooks ...
+5614 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks\\rthooks'
+5614 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'C:\\msys64\\ucrt64\\lib\\python3.11\\site-packages\\PyInstaller\\hooks\\rthooks'
+5992 INFO: Looking for dynamic libraries
+6153 INFO: Extra DLL search directories (AddDllDirectory): []
+6153 INFO: Extra DLL search directories (PATH): []
+6680 INFO: Warnings written to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\warn-termometro_ju.txt
+6696 INFO: Graph cross-reference written to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\xref-termometro_ju.html
+6744 INFO: checking PYZ
+6744 INFO: Building PYZ because PYZ-00.toc is non existent
+6744 INFO: Building PYZ (ZlibArchive) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\PYZ-00.pyz
+6982 INFO: Building PYZ (ZlibArchive) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\PYZ-00.pyz completed successfully.
+7014 INFO: checking PKG
+7014 INFO: Building PKG because PKG-00.toc is non existent
+7014 INFO: Building PKG (CArchive) termometro_ju.pkg
+14171 INFO: Building PKG (CArchive) termometro_ju.pkg completed successfully.
+14250 INFO: Bootloader C:\msys64\ucrt64\lib\python3.11\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw_d.exe
+14250 INFO: checking EXE
+14250 INFO: Building EXE because EXE-00.toc is non existent
+14250 INFO: Building EXE from EXE-00.toc
+14250 INFO: Copying bootloader EXE to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\dist\termometro_ju.exe
+14427 INFO: Copying icon to EXE
+14531 INFO: Copying 0 resources to EXE
+14531 INFO: Embedding manifest in EXE
+14644 INFO: Appending PKG archive to EXE
+14644 WARNING: Execution of '_append_data_to_exe' failed on attempt #1 / 20: PermissionError(13, 'Permission denied'). Retrying in 0.05 second(s)...
+14700 WARNING: Execution of '_append_data_to_exe' failed on attempt #2 / 20: PermissionError(13, 'Permission denied'). Retrying in 0.06 second(s)...
+14786 INFO: Fixing EXE headers
+15276 INFO: Building EXE from EXE-00.toc completed successfully.
+
+C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>python -m venv venv
+
+C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>venv\Scripts\activate
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>python -m pip install --upgrade pip
+Requirement already satisfied: pip in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (22.3)
+Collecting pip
+  Using cached pip-24.3.1-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 22.3
+    Uninstalling pip-22.3:
+      Successfully uninstalled pip-22.3
+Successfully installed pip-24.3.1
+WARNING: There was an error checking the latest version of pip.
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pip install pyinstaller
+Collecting pyinstaller
+  Using cached pyinstaller-6.11.1-py3-none-win_amd64.whl.metadata (8.3 kB)
+Requirement already satisfied: setuptools>=42.0.0 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from pyinstaller) (65.5.0)
+Collecting altgraph (from pyinstaller)
+  Using cached altgraph-0.17.4-py2.py3-none-any.whl.metadata (7.3 kB)
+Collecting pyinstaller-hooks-contrib>=2024.9 (from pyinstaller)
+  Using cached pyinstaller_hooks_contrib-2024.10-py3-none-any.whl.metadata (16 kB)
+Collecting packaging>=22.0 (from pyinstaller)
+  Using cached packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+Collecting pefile!=2024.8.26,>=2022.5.30 (from pyinstaller)
+  Using cached pefile-2023.2.7-py3-none-any.whl.metadata (1.4 kB)
+Collecting pywin32-ctypes>=0.2.1 (from pyinstaller)
+  Using cached pywin32_ctypes-0.2.3-py3-none-any.whl.metadata (3.9 kB)
+Using cached pyinstaller-6.11.1-py3-none-win_amd64.whl (1.3 MB)
+Using cached packaging-24.2-py3-none-any.whl (65 kB)
+Using cached pefile-2023.2.7-py3-none-any.whl (71 kB)
+Using cached pyinstaller_hooks_contrib-2024.10-py3-none-any.whl (338 kB)
+Using cached pywin32_ctypes-0.2.3-py3-none-any.whl (30 kB)
+Using cached altgraph-0.17.4-py2.py3-none-any.whl (21 kB)
+Installing collected packages: altgraph, pywin32-ctypes, pefile, packaging, pyinstaller-hooks-contrib, pyinstaller
+Successfully installed altgraph-0.17.4 packaging-24.2 pefile-2023.2.7 pyinstaller-6.11.1 pyinstaller-hooks-contrib-2024.10 pywin32-ctypes-0.2.3
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pip install pyserial
+Collecting pyserial
+  Using cached pyserial-3.5-py2.py3-none-any.whl.metadata (1.6 kB)
+Using cached pyserial-3.5-py2.py3-none-any.whl (90 kB)
+Installing collected packages: pyserial
+Successfully installed pyserial-3.5
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pip install matplotlib
+Collecting matplotlib
+  Downloading matplotlib-3.9.2-cp311-cp311-win_amd64.whl.metadata (11 kB)
+Collecting contourpy>=1.0.1 (from matplotlib)
+  Downloading contourpy-1.3.1-cp311-cp311-win_amd64.whl.metadata (5.4 kB)
+Collecting cycler>=0.10 (from matplotlib)
+  Using cached cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.22.0 (from matplotlib)
+  Downloading fonttools-4.55.0-cp311-cp311-win_amd64.whl.metadata (167 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib)
+  Downloading kiwisolver-1.4.7-cp311-cp311-win_amd64.whl.metadata (6.4 kB)
+Collecting numpy>=1.23 (from matplotlib)
+  Downloading numpy-2.1.3-cp311-cp311-win_amd64.whl.metadata (60 kB)
+Requirement already satisfied: packaging>=20.0 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib) (24.2)
+Collecting pillow>=8 (from matplotlib)
+  Downloading pillow-11.0.0-cp311-cp311-win_amd64.whl.metadata (9.3 kB)
+Collecting pyparsing>=2.3.1 (from matplotlib)
+  Using cached pyparsing-3.2.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting python-dateutil>=2.7 (from matplotlib)
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting six>=1.5 (from python-dateutil>=2.7->matplotlib)
+  Using cached six-1.16.0-py2.py3-none-any.whl.metadata (1.8 kB)
+Downloading matplotlib-3.9.2-cp311-cp311-win_amd64.whl (7.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.8/7.8 MB 45.8 kB/s eta 0:00:00
+Downloading contourpy-1.3.1-cp311-cp311-win_amd64.whl (219 kB)
+Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Downloading fonttools-4.55.0-cp311-cp311-win_amd64.whl (2.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 45.8 kB/s eta 0:00:00
+Downloading kiwisolver-1.4.7-cp311-cp311-win_amd64.whl (56 kB)
+Downloading numpy-2.1.3-cp311-cp311-win_amd64.whl (12.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.9/12.9 MB 85.4 kB/s eta 0:00:00
+Downloading pillow-11.0.0-cp311-cp311-win_amd64.whl (2.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.6/2.6 MB 26.3 kB/s eta 0:00:00
+Using cached pyparsing-3.2.0-py3-none-any.whl (106 kB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: six, pyparsing, pillow, numpy, kiwisolver, fonttools, cycler, python-dateutil, contourpy, matplotlib
+Successfully installed contourpy-1.3.1 cycler-0.12.1 fonttools-4.55.0 kiwisolver-1.4.7 matplotlib-3.9.2 numpy-2.1.3 pillow-11.0.0 pyparsing-3.2.0 python-dateutil-2.9.0.post0 six-1.16.0
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pip install mplcursors
+Collecting mplcursors
+  Using cached mplcursors-0.6-py3-none-any.whl.metadata (3.0 kB)
+Requirement already satisfied: matplotlib!=3.7.1,>=3.1 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from mplcursors) (3.9.2)
+Requirement already satisfied: contourpy>=1.0.1 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (1.3.1)
+Requirement already satisfied: cycler>=0.10 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (4.55.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (1.4.7)
+Requirement already satisfied: numpy>=1.23 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (2.1.3)
+Requirement already satisfied: packaging>=20.0 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (24.2)
+Requirement already satisfied: pillow>=8 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (11.0.0)
+Requirement already satisfied: pyparsing>=2.3.1 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (3.2.0)
+Requirement already satisfied: python-dateutil>=2.7 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from matplotlib!=3.7.1,>=3.1->mplcursors) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in c:\users\emanu\onedrive\área de trabalho\temperatura_mufola\venv\lib\site-packages (from python-dateutil>=2.7->matplotlib!=3.7.1,>=3.1->mplcursors) (1.16.0)
+Using cached mplcursors-0.6-py3-none-any.whl (20 kB)
+Installing collected packages: mplcursors
+Successfully installed mplcursors-0.6
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pip list
+Package                   Version
+------------------------- -----------
+altgraph                  0.17.4
+contourpy                 1.3.1
+cycler                    0.12.1
+fonttools                 4.55.0
+kiwisolver                1.4.7
+matplotlib                3.9.2
+mplcursors                0.6
+numpy                     2.1.3
+packaging                 24.2
+pefile                    2023.2.7
+pillow                    11.0.0
+pip                       24.3.1
+pyinstaller               6.11.1
+pyinstaller-hooks-contrib 2024.10
+pyparsing                 3.2.0
+pyserial                  3.5
+python-dateutil           2.9.0.post0
+pywin32-ctypes            0.2.3
+setuptools                65.5.0
+six                       1.16.0
+
+(venv) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola>pyinstaller --onefile --windowed termometro_ju.py
+248 INFO: PyInstaller: 6.11.1, contrib hooks: 2024.10
+248 INFO: Python: 3.11.0
+266 INFO: Platform: Windows-10-10.0.22631-SP0
+266 INFO: Python environment: C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\venv
+266 INFO: wrote C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\termometro_ju.spec
+283 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\emanu\\OneDrive\\Área de '
+ 'Trabalho\\Temperatura_mufola\\venv\\Scripts\\pyinstaller.exe',
+ 'C:\\Program Files\\Python311\\python311.zip',
+ 'C:\\Program Files\\Python311\\DLLs',
+ 'C:\\Program Files\\Python311\\Lib',
+ 'C:\\Program Files\\Python311',
+ 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv',
+ 'C:\\Users\\emanu\\OneDrive\\Área de '
+ 'Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages',
+ 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola']
+889 INFO: checking Analysis
+889 INFO: Building Analysis because Analysis-00.toc is non existent
+889 INFO: Running Analysis Analysis-00.toc
+889 INFO: Target bytecode optimization level: 0
+889 INFO: Initializing module dependency graph...
+892 INFO: Initializing module graph hook caches...
+912 INFO: Analyzing base_library.zip ...
+2505 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+3950 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7267 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+15427 INFO: Caching module dependency graph...
+15764 INFO: Looking for Python shared library...
+15780 INFO: Using Python shared library: C:\Program Files\Python311\python311.dll
+15780 INFO: Analyzing C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\termometro_ju.py
+16524 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+16923 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+16923 INFO: SetuptoolsInfo: initializing cached setuptools info...
+17656 INFO: Processing standard module hook 'hook-packaging.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+18017 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+19316 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+20074 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+24056 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+24972 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+25474 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+31856 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+32179 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+32422 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+33115 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+33352 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+33439 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36608 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36823 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+38479 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+40769 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+44468 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+44616 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+44851 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+44851 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+45754 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+46262 INFO: Processing module hooks (post-graph stage)...
+46280 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+46292 INFO: Matplotlib backend selection method: automatic discovery of used backends
+46474 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\termometro_ju.py': ['TkAgg']
+46519 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['TkAgg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
+46519 INFO: Selected matplotlib backends: ['TkAgg']
+46794 INFO: Processing standard module hook 'hook-pkg_resources.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+49295 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+49484 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+51605 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+51644 INFO: Performing binary vs. data reclassification (1124 entries)
+64548 INFO: Looking for ctypes DLLs
+64631 WARNING: Ignoring /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation imported from C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\venv\Lib\site-packages\serial\tools\list_ports_osx.py - only basenames are supported with ctypes imports!
+64631 WARNING: Ignoring /System/Library/Frameworks/IOKit.framework/IOKit imported from C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\venv\Lib\site-packages\serial\tools\list_ports_osx.py - only basenames are supported with ctypes imports!
+64844 INFO: Analyzing run-time hooks ...
+64855 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64860 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64871 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64877 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64877 INFO: Including run-time hook 'pyi_rth_pkgres.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64901 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+64904 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+64909 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+65056 INFO: Looking for dynamic libraries
+66279 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\venv\\Lib\\site-packages\\numpy.libs']
+66279 INFO: Extra DLL search directories (PATH): []
+68094 INFO: Warnings written to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\warn-termometro_ju.txt
+68569 INFO: Graph cross-reference written to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\xref-termometro_ju.html
+68762 INFO: checking PYZ
+68762 INFO: Building PYZ because PYZ-00.toc is non existent
+68762 INFO: Building PYZ (ZlibArchive) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\PYZ-00.pyz
+72253 INFO: Building PYZ (ZlibArchive) C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\build\termometro_ju\PYZ-00.pyz completed successfully.
+72379 INFO: checking PKG
+72379 INFO: Building PKG because PKG-00.toc is non existent
+72379 INFO: Building PKG (CArchive) termometro_ju.pkg
+94138 INFO: Building PKG (CArchive) termometro_ju.pkg completed successfully.
+94203 INFO: Bootloader C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+94204 INFO: checking EXE
+94204 INFO: Building EXE because EXE-00.toc is non existent
+94204 INFO: Building EXE from EXE-00.toc
+94206 INFO: Copying bootloader EXE to C:\Users\emanu\OneDrive\Área de Trabalho\Temperatura_mufola\dist\termometro_ju.exe
+94351 INFO: Copying icon to EXE
+94477 INFO: Copying 0 resources to EXE
+94479 INFO: Embedding manifest in EXE
+94641 INFO: Appending PKG archive to EXE
+94641 WARNING: Execution of '_append_data_to_exe' failed on attempt #1 / 20: PermissionError(13, 'Permission denied'). Retrying in 0.05 second(s)...
+94696 WARNING: Execution of '_append_data_to_exe' failed on attempt #2 / 20: PermissionError(13, 'Permission denied'). Retrying in 0.06 second(s)...
+94752 WARNING: Execution of '_append_data_to_exe' failed on attempt #3 / 20: PermissionError(13, 'Permission denied'). Retrying in 0.06 second(s)...
+94885 INFO: Fixing EXE headers
+100668 INFO: Building EXE from EXE-00.toc completed successfully.

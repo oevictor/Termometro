@@ -58,39 +58,88 @@ class ArduinoTemperatureMonitor(tk.Tk):
         # Define o protocolo para captura do evento de fechamento da janela.
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+    # def initialize_serial(self):
+    #     """
+    #     Detecta automaticamente a porta serial do Arduino e estabelece a conexão.
+    #     Retorna uma conexão serial ou None caso falhe.
+    #     """
+    #     try:
+    #         # Procura todas as portas disponíveis e verifica se algum dispositivo Arduino está conectado.
+    #         #tem que mudar isso para aceitar coisa na porta serial e não apenas Arduino, pq assim vc tem que baixar a IDE do Arduino para funcionar
+            
+    #         #PID=2341:0042 SER=9533335383635170E102 -----> representa extamento a indentificação do Arduino que é o MEGA 2560, outros talvez seja necessario incluir aqui 
+            
+            
+    #         ports = serial.tools.list_ports.comports()
+    #         arduino_ports = [port.device for port in ports if 'Arduino' in port.description or 'CH340' or 'PID=2341:0042 SER=9533335383635170E102' in port.description]
+    #         # arduino_ports = [port.device for port in ports if 'Arduino' in port.description or 'CH340' in port.description]
+            
+    #         if not arduino_ports:
+    #             # Exibe mensagem de erro se nenhum dispositivo Arduino for encontrado.
+    #             messagebox.showerror("Erro", "Nenhum dispositivo Arduino encontrado.")
+    #             return None
+    #         elif len(arduino_ports) > 1:
+    #             # Caso haja mais de um dispositivo Arduino conectado, solicita ao usuário para escolher uma porta.
+    #             selected_port = simpledialog.askstring("Porta Serial", f"Escolha entre: {', '.join(arduino_ports)}")
+    #             if selected_port not in arduino_ports:
+    #                 messagebox.showerror("Erro", "Porta serial inválida.")
+    #                 return None
+    #         else:
+    #             # Seleciona a única porta disponível caso haja apenas um Arduino conectado.
+    #             selected_port = arduino_ports[0]
+            
+    #         # Inicia a comunicação serial na porta selecionada e espera o Arduino reiniciar.
+    #         ser = serial.Serial(selected_port, 9600, timeout=1)
+    #         time.sleep(2)
+    #         return ser
+    #     except Exception as e:
+    #         # Exibe mensagem de erro caso a comunicação serial falhe.
+    #         messagebox.showerror("Erro", f"Erro ao inicializar comunicação serial: {e}")
+    #         return None
     def initialize_serial(self):
         """
-        Detecta automaticamente a porta serial do Arduino e estabelece a conexão.
+        Detecta automaticamente dispositivos conectados às portas seriais e estabelece conexão.
         Retorna uma conexão serial ou None caso falhe.
         """
         try:
-            # Procura todas as portas disponíveis e verifica se algum dispositivo Arduino está conectado.
-            #tem que mudar isso para aceitar coisa na porta serial e não apenas Arduino, pq assim vc tem que baixar a IDE do Arduino para funcionar
+            # Lista todas as portas seriais disponíveis
             ports = serial.tools.list_ports.comports()
-            arduino_ports = [port.device for port in ports if 'Arduino' in port.description or 'CH340' in port.description]
-            
-            if not arduino_ports:
-                # Exibe mensagem de erro se nenhum dispositivo Arduino for encontrado.
-                messagebox.showerror("Erro", "Nenhum dispositivo Arduino encontrado.")
+
+            # Exibe mensagem de erro se nenhuma porta for encontrada
+            if not ports:
+                messagebox.showinfo("Informativo", "Nenhum dispositivo serial encontrado.")
                 return None
-            elif len(arduino_ports) > 1:
-                # Caso haja mais de um dispositivo Arduino conectado, solicita ao usuário para escolher uma porta.
-                selected_port = simpledialog.askstring("Porta Serial", f"Escolha entre: {', '.join(arduino_ports)}")
-                if selected_port not in arduino_ports:
+
+            # Procura o dispositivo com o PID e SERIAL específicos
+            specific_device = None
+            for port in ports:
+                if "PID=2341:0042" in port.hwid and "SER=9533335383635170E102" in port.hwid:
+                    specific_device = port.device
+                    break
+
+            # Caso o dispositivo específico seja encontrado, usa ele automaticamente
+            if specific_device:
+                selected_port = specific_device
+                messagebox.showinfo("JONES BOBO",f"Dispositivo específico detectado: {selected_port}")
+                # print(f"Dispositivo específico detectado: {selected_port}")
+            else:
+                # Caso contrário, permite que o usuário escolha manualmente
+                port_list = [f"{port.device} - {port.description}" for port in ports]
+                selected_port = simpledialog.askstring("Porta Serial", f"Escolha uma porta:\n{chr(10).join(port_list)}")
+                if not selected_port or selected_port.split(" ")[0] not in [port.device for port in ports]:
                     messagebox.showerror("Erro", "Porta serial inválida.")
                     return None
-            else:
-                # Seleciona a única porta disponível caso haja apenas um Arduino conectado.
-                selected_port = arduino_ports[0]
-            
-            # Inicia a comunicação serial na porta selecionada e espera o Arduino reiniciar.
+                selected_port = selected_port.split(" ")[0]
+
+            # Estabelece a conexão com a porta selecionada
             ser = serial.Serial(selected_port, 9600, timeout=1)
-            time.sleep(2)
+            time.sleep(2)  # Aguarda o dispositivo inicializar
             return ser
         except Exception as e:
-            # Exibe mensagem de erro caso a comunicação serial falhe.
+            # Mensagem de erro em caso de falha
             messagebox.showerror("Erro", f"Erro ao inicializar comunicação serial: {e}")
             return None
+
 
     def create_widgets(self):
         """
