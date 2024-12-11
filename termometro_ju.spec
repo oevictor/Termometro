@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['C:\\Users\\emanu\\OneDrive\\Área de Trabalho\\Temperatura_mufola\\icone_termometro (2).ico'],
 )
